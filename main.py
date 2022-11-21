@@ -63,9 +63,12 @@ def main():
     img_size = DATASETS[args.dataset]['img_size']
     num_classes = DATASETS[args.dataset]['num_classes']
     img_mean, img_std = DATASETS[args.dataset]['mean'], DATASETS[args.dataset]['std']
+    arch = args.arch
+
+    # l1,h8,d64,n1,s1,g1,p4,f7,a1_l2,h8,d128,n10,s0,g1,p2,f7,a1_l3,h8,d256,n1,s0,g1,p2,f7,a1
 
     model = MsViT(img_size=img_size, num_classes=num_classes,
-                  arch='l1,h4,d64,n1,s1,g1,p4,f7,a1_l2,h4,d128,n10,s0,g1,p2,f7,a1_l3,h4,d256,n1,s0,g1,p2,f7,a1')
+                  arch=arch)
 
     criterion = LabelSmoothingCrossEntropy()
 
@@ -77,9 +80,8 @@ def main():
         model.cuda(0)
         criterion = criterion.cuda(0)
 
-    base_optimizer = torch.optim.AdamW
-    optimizer = SAM(model.parameters(), base_optimizer,
-                    lr=args.lr, weight_decay=args.weight_decay, adaptive=True, rho=0.4)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr,
+                                  weight_decay=args.weight_decay)
 
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
         optimizer, T_max=args.epochs, eta_min=0)
@@ -122,6 +124,7 @@ def main():
     print("Heads: ", args.heads)
     print("MLP: ", args.mlp)
     print("Dataset: ", args.dataset)
+    print("Arch: ", args.arch)
     time_begin = time()
     for epoch in range(args.epochs):
 

@@ -38,4 +38,5 @@ def init_parser() -> argparse.ArgumentParser:
                         help='heads num (4)')
     parser.add_argument('--mlp', default=2, type=float,
                         help='mlp ratio (2)')
+    parser.add_argument('--arch', type=str)
     return parser
