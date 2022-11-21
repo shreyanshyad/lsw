@@ -80,8 +80,9 @@ def main():
         model.cuda(0)
         criterion = criterion.cuda(0)
 
-    optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr,
-                                  weight_decay=args.weight_decay)
+    base_optimizer = torch.optim.AdamW
+    optimizer = SAM(model.parameters(), base_optimizer,
+                    lr=args.lr, weight_decay=args.weight_decay)
 
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
         optimizer, T_max=args.epochs, eta_min=0)
