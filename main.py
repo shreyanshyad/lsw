@@ -68,7 +68,7 @@ def main():
     # l1,h8,d64,n1,s1,g1,p4,f7,a1_l2,h8,d128,n10,s0,g1,p2,f7,a1_l3,h8,d256,n1,s0,g1,p2,f7,a1
 
     model = MsViT(img_size=img_size, num_classes=num_classes,
-                  arch=arch)
+                  arch=arch, attn_type='linformer')
 
     criterion = LabelSmoothingCrossEntropy()
 
@@ -126,6 +126,7 @@ def main():
     print("MLP: ", args.mlp)
     print("Dataset: ", args.dataset)
     print("Arch: ", args.arch)
+    print("Attn Type: ", args.attn_type)
     time_begin = time()
     for epoch in range(args.epochs):
 
